@@ -37,6 +37,7 @@ export default function App() {
   const [run, setRun] = useState<TideRun | null>(null);
   const [flashId, setFlashId] = useState<StageId | null>(null);
   const [howOpen, setHowOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
   const pending = useRef<{ id: number; apply: Apply; after?: () => void } | null>(null);
 
   useEffect(() => saveProject(project), [project]);
@@ -53,9 +54,11 @@ export default function App() {
 
   /** Every action goes through TideGate. State only changes once the panel finishes its check. */
   function submit(verdict: Verdict, onOk: Apply, onRefused: Apply, after?: () => void) {
-    flush();
+    // One check at a time: a second click mid-animation would be judged against stale state.
+    if (pending.current) return;
     const id = Date.now();
     pending.current = { id, apply: verdict.ok ? onOk : onRefused, after: verdict.ok ? after : undefined };
+    setBusy(true);
     setRun({ id, verdict, who: actor.name, roleLabel: ROLE_LABELS[role] });
   }
 
@@ -63,6 +66,7 @@ export default function App() {
     const p = pending.current;
     if (!p) return;
     pending.current = null;
+    setBusy(false);
     setProject(p.apply);
     p.after?.();
   }
@@ -166,6 +170,7 @@ export default function App() {
 
   function reset() {
     pending.current = null;
+    setBusy(false);
     clearSaved();
     setProject(seedProject());
     setRun(null);
@@ -181,7 +186,7 @@ export default function App() {
     <div className={`app role-${role}`}>
       <TopBar project={project} role={role} roles={roles} onRole={setRole} onReset={reset} onHow={() => setHowOpen(true)} />
 
-      <main className="layout">
+      <main className={`layout ${busy ? 'is-busy' : ''}`} aria-busy={busy}>
         <div className="col-main">
           <Summary project={project} role={role} />
           <RoleBanner project={project} role={role} />
