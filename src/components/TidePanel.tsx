@@ -148,6 +148,7 @@ function Outcome({ v, movesMoney }: { v: Verdict; movesMoney: boolean }) {
           nodes signed <IconCheck size={18} />
         </div>
         <p className="strong">{v.outcome}</p>
+        {v.note && <p>{v.note}</p>}
       </div>
     );
   }

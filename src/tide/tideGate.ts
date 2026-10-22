@@ -31,6 +31,8 @@ export type Verdict = {
   outcome: string;
   /** "With ordinary login..." contrast line, shown for insider and attacker attempts. */
   contrast?: string;
+  /** Extra line shown on success. */
+  note?: string;
 };
 
 export const THRESHOLD = 14 as const;
@@ -202,7 +204,7 @@ export function evaluateRelease(project: Project, stageId: StageId, actor: Actor
       ? roleDetail[actor.role] + '.'
       : checks.find((c) => !c.ok)?.detail ?? 'Policy not met.';
 
-  return verdict(
+  const released = verdict(
     'release',
     `Release ${stage.name} · ${money(stage.amount)}`,
     checks,
@@ -219,6 +221,10 @@ export function evaluateRelease(project: Project, stageId: StageId, actor: Actor
     },
     true,
   );
+  if (released.ok) {
+    released.note = `${money(stage.amount)} paid to ${project.payoutAccount.name}. Two independent signatures, no single key.`;
+  }
+  return released;
 }
 
 /** Contract and payout changes need a quorum of the contract parties: homeowner + builder. */

@@ -66,9 +66,17 @@ export function Summary({ project, role }: { project: Project; role: Role }) {
       </div>
 
       <div className="summary-board">
+        <div className="board-head">
+          <span className="eyebrow muted">Site board</span>
+          <span className="board-count tabular">
+            {doneCount}
+            <small>/6 paid</small>
+          </span>
+        </div>
         <House project={project} />
         <div className="board-caption">
-          <IconShield size={14} /> {doneCount} of 6 stages released · {project.address}
+          <IconShield size={14} />
+          {next ? `Building now: ${next.name}` : 'Handover complete'}
         </div>
       </div>
     </section>

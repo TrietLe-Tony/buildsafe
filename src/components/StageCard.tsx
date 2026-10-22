@@ -57,7 +57,16 @@ export function StageCard(props: Props) {
             <h3>{stage.name}</h3>
             <div className="stage-meta">
               {stage.pct}% of contract
-              {stage.releasedAt && <> · released {fmtDate(stage.releasedAt)} · <span className="mono">{stage.txId}</span></>}
+              {stage.releasedAt && (
+                <>
+                  {' '}
+                  · released {fmtDate(stage.releasedAt)}
+                  {stage.inspectorSig && (
+                    <> · signed by {stage.inspectorSig.by} + {(stage.mediatorSig ?? stage.ownerSig)?.by}</>
+                  )}{' '}
+                  · <span className="mono">{stage.txId}</span>
+                </>
+              )}
               {status === 'locked' && <> · unlocks after the previous stage</>}
             </div>
           </div>
@@ -70,7 +79,7 @@ export function StageCard(props: Props) {
           <div className="stage-amount tabular">{money(stage.amount)}</div>
         </header>
 
-        {(active || status === 'released') && stage.id !== 'deposit' && (
+        {active && (
           <div className="stage-detail">
             <Signatures project={project} stage={stage} />
             {stage.evidence.length > 0 && (

@@ -6,7 +6,7 @@ export function House({ project }: { project: Project }) {
   const studs = [64, 88, 112, 136, 160, 184, 208, 232, 256];
 
   return (
-    <svg viewBox="0 0 320 180" className="house" role="img" aria-label={`${done.size} of 6 stages released`}>
+    <svg viewBox="0 28 320 152" className="house" role="img" aria-label={`${done.size} of 6 stages released`}>
       {/* blueprint ghost of the finished home */}
       <g className="house-ghost">
         <path d="M44 92 L160 40 L276 92" />
