@@ -40,7 +40,7 @@ Seeded project: 14 Banksia Crescent, Tarneit VIC, $420,000 contract. Homeowner P
 
 ## Simulated Tide
 
-**Tide is simulated in this prototype (allowed by the organisers).** All policy logic lives in [`src/tide/tideGate.ts`](src/tide/tideGate.ts). In production this policy runs as a Forseti contract on the Tide Fabric: each ORK validates it and contributes a partial signature (threshold 14 of 20). BuildSafe's server never holds a signing key. To go live, `signWithFabric()` is replaced by a TideCloak signing request carrying the same release instruction and approvals. The rest of the app does not change.
+**Tide is simulated in this prototype (allowed by the organisers).** All policy logic lives in [`src/tide/tideGate.ts`](src/tide/tideGate.ts). In production this policy runs as a Forseti contract on the Tide Fabric: each ORK validates it and contributes a partial signature (threshold 14 of 20). BuildSafe's server never holds a signing key. To go live, `signWithFabric()` is replaced by a TideCloak signing request carrying the same release instruction and approvals. The rest of the app does not change. The top bar shows a simulated TideCloak sign-in (BYOiD) for each role; the attacker has none, only a hijacked server session.
 
 | Need | Tide capability | In BuildSafe |
 |---|---|---|

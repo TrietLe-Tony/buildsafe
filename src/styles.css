@@ -220,11 +220,44 @@ button {
   font-size: 12.5px;
   color: rgba(255, 255, 255, 0.62);
 }
+.session {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: auto;
+  padding: 6px 12px 6px 10px;
+  border-radius: 9px;
+  background: rgba(47, 125, 91, 0.18);
+  border: 1px solid rgba(120, 200, 160, 0.35);
+  color: #9fe0bf;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.session strong {
+  display: block;
+  color: #fff;
+  font-size: 13.5px;
+}
+.session-label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.session-role {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+}
+.session-bad {
+  background: rgba(178, 58, 46, 0.25);
+  border-color: rgba(240, 130, 115, 0.45);
+  color: #f3a89d;
+}
 .roles {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-left: auto;
 }
 .roles-label {
   font-size: 12px;

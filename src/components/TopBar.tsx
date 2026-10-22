@@ -1,6 +1,6 @@
 import { money } from '../store';
 import type { Project, Role } from '../types';
-import { IconInfo, IconReset, Logo } from './Icons';
+import { IconInfo, IconReset, IconShield, IconX, Logo } from './Icons';
 
 export const ROLE_LABELS: Record<Role, string> = {
   homeowner: 'Homeowner',
@@ -20,6 +20,36 @@ type Props = {
   onHow: () => void;
 };
 
+/**
+ * Simulated TideCloak sign-in (BYOiD). In production each person signs in through TideCloak and the
+ * role comes from their token; the attacker has no TideCloak session at all, only a stolen server one.
+ */
+function Session({ project, role }: { project: Project; role: Role }) {
+  if (role === 'attacker') {
+    return (
+      <div className="session session-bad" title="No TideCloak session: the attacker only has a hijacked server session">
+        <IconX size={15} />
+        <div>
+          <span className="session-label">No TideCloak sign-in</span>
+          <strong>Hijacked server session</strong>
+        </div>
+      </div>
+    );
+  }
+  const person = project.people[role];
+  return (
+    <div className="session" title="Simulated TideCloak sign-in (BYOiD). Role comes from the TideCloak token.">
+      <IconShield size={15} />
+      <div>
+        <span className="session-label">Signed in with TideCloak</span>
+        <strong>
+          {person.name} <span className="session-role">· {ROLE_LABELS[role].toLowerCase()}</span>
+        </strong>
+      </div>
+    </div>
+  );
+}
+
 export function TopBar({ project, role, roles, onRole, onReset, onHow }: Props) {
   return (
     <header className="topbar">
@@ -32,6 +62,8 @@ export function TopBar({ project, role, roles, onRole, onReset, onHow }: Props) 
           <span>Single storey · contract {money(project.contract)}</span>
         </div>
       </div>
+
+      <Session project={project} role={role} />
 
       <nav className="roles" aria-label="View as">
         <span className="roles-label">View as</span>
