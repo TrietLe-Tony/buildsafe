@@ -320,9 +320,9 @@ button {
   margin: 4px 0 14px;
 }
 .summary-row {
-  display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 170px 250px minmax(0, 1fr);
+  gap: 24px;
   margin-bottom: 18px;
 }
 .mid-money {
@@ -1371,6 +1371,9 @@ button {
   }
   .roles {
     margin-left: 0;
+  }
+  .summary-row {
+    grid-template-columns: 1fr 1fr;
   }
 }
 @media (max-width: 980px) {

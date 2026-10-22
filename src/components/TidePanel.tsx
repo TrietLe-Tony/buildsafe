@@ -7,7 +7,7 @@ export type TideRun = { id: number; verdict: Verdict; who: string; roleLabel: st
 
 type Phase = 'checks' | 'nodes' | 'done';
 
-const ROW_MS = 420;
+const ROW_MS = 380;
 const NODE_MS = 65;
 
 export function TidePanel({ run, onDone }: { run: TideRun | null; onDone: (id: number) => void }) {
@@ -88,7 +88,7 @@ function RunView({ run, shown, phase, filled }: { run: TideRun; shown: number; p
   const v = run.verdict;
   const done = phase === 'done';
   const movesMoney = v.kind === 'release' || v.kind === 'change';
-  const ringState = !done ? (phase === 'nodes' ? 'signing' : 'waiting') : v.ok ? (movesMoney ? 'ok' : 'idle') : 'refused';
+  const ringState = !done ? (phase === 'nodes' ? 'signing' : 'waiting') : v.ok ? (movesMoney ? 'ok' : 'none') : 'refused';
 
   return (
     <div className="tide-run" key={run.id}>
@@ -163,7 +163,7 @@ function Outcome({ v, movesMoney }: { v: Verdict; movesMoney: boolean }) {
   );
 }
 
-function NodeRing({ filled, state }: { filled: number; state: 'idle' | 'waiting' | 'signing' | 'ok' | 'refused' }) {
+function NodeRing({ filled, state }: { filled: number; state: 'idle' | 'none' | 'waiting' | 'signing' | 'ok' | 'refused' }) {
   const n = 20;
   const r = 62;
   return (
@@ -176,10 +176,10 @@ function NodeRing({ filled, state }: { filled: number; state: 'idle' | 'waiting'
         return <circle key={i} cx={x} cy={y} r="6.5" className={`node ${i < filled ? 'node-on' : ''}`} style={{ animationDelay: `${i * 60}ms` }} />;
       })}
       <text x="80" y="78" textAnchor="middle" className="ring-num">
-        {state === 'idle' ? '14/20' : `${filled}/20`}
+        {state === 'idle' ? '14/20' : state === 'none' ? '–' : `${filled}/20`}
       </text>
       <text x="80" y="98" textAnchor="middle" className="ring-label">
-        {state === 'idle' ? 'threshold' : state === 'refused' ? 'no signature' : 'signed'}
+        {state === 'idle' ? 'threshold' : state === 'none' ? 'no payment' : state === 'refused' ? 'no signature' : 'signed'}
       </text>
     </svg>
   );
