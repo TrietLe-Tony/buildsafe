@@ -41,7 +41,9 @@ export function Summary({ project, role }: { project: Project; role: Role }) {
             <div className="eyebrow muted">Payout account</div>
             <div className="small-strong">
               {project.payoutAccount.name}
-              <span className="muted tabular"> · BSB {project.payoutAccount.bsb} · {project.payoutAccount.acct}</span>
+              <span className="muted tabular block">
+                BSB {project.payoutAccount.bsb} · {project.payoutAccount.acct}
+              </span>
             </div>
           </div>
         </div>

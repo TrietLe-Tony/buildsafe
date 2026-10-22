@@ -321,7 +321,7 @@ button {
 }
 .summary-row {
   display: grid;
-  grid-template-columns: 170px 250px minmax(0, 1fr);
+  grid-template-columns: 200px 250px minmax(0, 1fr);
   gap: 24px;
   margin-bottom: 18px;
 }
@@ -335,6 +335,10 @@ button {
   font-weight: 700;
   margin-top: 5px;
   font-size: 14px;
+}
+.small-strong .block {
+  display: block;
+  font-weight: 500;
 }
 .progress {
   display: flex;

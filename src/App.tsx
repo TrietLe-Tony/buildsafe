@@ -170,6 +170,7 @@ export default function App() {
     setProject(seedProject());
     setRun(null);
     setFlashId(null);
+    setRole('homeowner');
   }
 
   const hasDispute = project.stages.some((s) => s.disputeOpenedAt && !s.releasedAt);
