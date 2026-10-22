@@ -1,18 +1,68 @@
-# BuildSafe
+[![Built with TideCloak](https://tide.org/badges/built-with-tidecloak.svg)](https://tide.org/tidecloak?utm_source=github&utm_medium=readme&utm_campaign=unlocked)
 
-**BuildSafe holds your home build budget in a vault nobody can open alone: each stage is paid only when you and an independent inspector both sign off.**
+# BuildSafe
 
 ## Project overview
 
-**Vision & originality.** Building payments without trusting anyone with the money. Today a homeowner pays a builder, or trusts an escrow company, a bank or an app admin to hold it. BuildSafe replaces that custodian with rules: stage money moves only when the right people sign.
+**BuildSafe holds your home build budget in a vault nobody can open alone: each stage is paid only when you and an independent inspector both sign off.**
 
-**Trust constraint insight.** When a builder collapses, money already paid is gone. Porter Davis left about 1,700 Victorian and Queensland homes unfinished in 2023, with an estimated 800 families uninsured and $30,000 to $50,000 lost on average. 3,472 construction companies went insolvent in FY2025-26. Any escrow that a single party controls just moves the risk to that party.
+Built with [TideCloak](https://tide.org/tidecloak?utm_source=github&utm_medium=readme&utm_campaign=unlocked).
 
-**Value & impact.** Homeowners can hire small or new builders with confidence. Builders see their money is secured and get paid the moment work is verified, which protects their cash flow. Disputes go to the inspector plus an independent mediator, never one side.
+### 1. Vision & originality
 
-**Why TideCloak matters.** A stage release is only valid with a threshold signature from the Tide network, issued when a policy is met: stage claimed, inspector assigned to this project signed, homeowner signed, stages in order. BuildSafe's server holds no key, so neither our admins nor a hacker can release funds or change payout accounts. With ordinary login and backend permissions, they could.
+BuildSafe offers a way to pay for a home build without trusting anyone to hold the money. Today a homeowner either pays the builder directly or trusts an escrow company, a bank or an app admin to hold the funds. BuildSafe replaces that custodian with rules. Stage money moves only when the right people sign: the builder claims the stage, an inspector assigned to the project verifies it, and the homeowner approves.
 
-**Prototype & storytelling.** Watch the slab stage released after both sign-offs; the builder claiming lock-up early, refused; and a BuildSafe admin trying to force a payment: "0 of 20 nodes signed".
+What makes it distinctive is that no one in the system can hold the money alone, including BuildSafe. The platform has no signing key. Releases are authorised by a threshold signature from the Tide network, which is only issued when the stage's policy is met.
+
+### 2. Trust constraint insight
+
+When a builder collapses, money already paid is gone. Porter Davis left about 1,700 Victorian and Queensland homes unfinished in 2023, with an estimated 800 families uninsured and average losses of $30,000 to $50,000. In FY2025-26, 3,472 construction companies went insolvent, 24.5% of all company insolvencies in Australia.
+
+The usual fix is escrow. But any escrow controlled by a single party only moves the risk to that party. The custodian can fail, be breached, or have an insider who redirects funds. Payment redirection scams work the same way: change the payout account, and the next payment goes to the attacker.
+
+With that constraint removed, stage payments can be secured without trusting a middleman. Money is locked against verified progress, released only when the rules are satisfied, and protected from the platform itself.
+
+### 3. Value & impact
+
+Building a home is the biggest purchase most families make, and it's paid in large chunks long before the house exists. BuildSafe changes who carries that risk.
+
+- **Homeowners** can hire small or new builders with confidence. Money is never paid ahead of verified work, and if a builder collapses, unreleased stage money stays in the vault. An independent inspector checks each stage, so they don't have to judge quality themselves.
+- **Builders** can prove the money is secured, helping smaller builders compete with big names. They're paid as soon as work is verified, and a homeowner can't hold back payment indefinitely.
+- **Disputes** go to the inspector plus an independent mediator, never to one side.
+- **No redirection scams.** Changing the payout account needs both homeowner and builder, so a hacked email or admin account can't send a payment to a criminal.
+- **No platform risk.** BuildSafe holds no signing key, so a server breach, a rogue employee, or BuildSafe shutting down can't release or redirect funds.
+
+**Wider impact.** Builder insolvencies hit thousands of Australian families and push good small builders out of the market, because homeowners stick with big names they assume are safer. By making stage payments safe no matter who the builder is, BuildSafe lowers the cost of trust for both sides. The same pattern could later extend to renovations, strata repairs, or any staged project where one side pays upfront and hopes the other delivers.
+
+### 4. Why TideCloak matters
+
+A stage release is only valid with a threshold signature from the Tide network, issued when a policy is met: **stage claimed, inspector assigned to this project signed, homeowner signed**, stages in order. BuildSafe's server holds no key, so neither our admins nor a hacker can release funds or change payout accounts.
+
+| Need | Tide capability | In BuildSafe |
+|---|---|---|
+| Nobody can move money alone | **Threshold signing** by the Tide Fabric (key split across independent nodes, e.g. 14 of 20) | A stage release is only valid with a Fabric signature. BuildSafe's server holds no signing key |
+| Release only when rules are met | **Forseti policy** (rules checked by every node: ValidateData, ValidateApprovers, ValidateExecutor) | Per stage: claimed by the builder · signed by homeowner · signed by an inspector assigned to this project · evidence attached · amount equals stage amount · stages in order |
+| No single admin changes the rules | **Quorum governance** (admin changes need multiple approvals) | Changing amounts, stages or the payout account needs homeowner + builder |
+| Identity | **TideCloak login (BYOiD)** with roles | Homeowner, builder, inspector, mediator, BuildSafe admin |
+
+**The ordinary login test.** With normal login and backend permissions, a BuildSafe admin, or anyone who breaches our server, could release funds or swap the payout account, and an escrow company would have to be trusted. With Tide, a release that breaks the rules simply has no valid signature. The app shows this on screen whenever the admin or attacker role tries.
+
+### 5. Prototype & storytelling
+
+The prototype is a working, clickable demo of one seeded project: 14 Banksia Crescent, Tarneit VIC, a $420,000 contract. 
+- homeowner Priya Sharma
+- builder Coastline Homes
+- inspector Mei Lin (registered building surveyor)
+The deposit has already been released.
+
+Key interactions for judges:
+
+1. **Happy path.** The slab stage is released after both sign-offs. The Tide panel checks every rule, 14 of 20 nodes sign, and $63,000 moves from Held to Released.
+2. **Builder claims too early.** The builder claims lock-up before the frame is inspected. Refused: stages must be completed in order.
+3. **Insider and attacker.** A BuildSafe admin tries to force a payment: "0 of 20 nodes signed. BuildSafe cannot move your money." An attacker tries to change the payout bank account: refused without homeowner + builder approval.
+4. **Dispute (optional).** After 10 days of homeowner silence on a verified stage, a mediator can release the payment together with the inspector's signature.
+
+> **Note:** Tide is simulated in this prototype. See [Simulated Tide](#simulated-tide) below.
 
 ## Setup
 
@@ -27,29 +77,11 @@ Open http://localhost:5173 at browser zoom 100% (designed for 1920x1080). No bac
 
 Production build: `npm run build` (output in `dist/`).
 
-## Demo script (about 2 minutes)
-
-Seeded project: 14 Banksia Crescent, Tarneit VIC, $420,000 contract. Homeowner Priya Sharma, builder Coastline Homes, inspector Mei Lin (registered building surveyor). Deposit already released.
-
-1. **Happy path.** *Builder*: on Base (slab), pick site photos and click **Claim $63,000**. *Inspector*: tick the checklist and click **Sign off stage**. *Homeowner*: click **Approve & release $63,000**. The Tide panel checks every rule, 14 of 20 nodes sign, and the money moves from Held to Released.
-2. **Builder claims too early.** *Builder*: on Lock-up, click **Claim this stage**, pick a photo, click **Claim $105,000**. Refused: stages must be completed in order, no inspector sign off on Frame.
-3. **Insider and attacker.** *BuildSafe admin*: **Force release Frame ($84,000)**. Refused, "0 of 20 nodes signed. BuildSafe cannot move your money." *Attacker*: **Change payout bank account**. Refused, it needs homeowner + builder approval (this is how payment redirection scams work).
-4. **Dispute (optional).** With a stage signed by the inspector, *Builder* clicks **Fast-forward 10 days**, then **Open dispute**. A *Mediator* role appears and can release together with the inspector's signature.
-
 **How it works** (top right) explains the three steps and the ordinary login comparison.
 
 ## Simulated Tide
 
-**Tide is simulated in this prototype (allowed by the organisers).** All policy logic lives in [`src/tide/tideGate.ts`](src/tide/tideGate.ts). In production this policy runs as a Forseti contract on the Tide Fabric: each ORK validates it and contributes a partial signature (threshold 14 of 20). BuildSafe's server never holds a signing key. To go live, `signWithFabric()` is replaced by a TideCloak signing request carrying the same release instruction and approvals. The rest of the app does not change. The top bar shows a simulated TideCloak sign-in (BYOiD) for each role; the attacker has none, only a hijacked server session.
-
-| Need | Tide capability | In BuildSafe |
-|---|---|---|
-| Nobody can move money alone | **Threshold signing** by the Tide Fabric (key split across independent nodes, e.g. 14 of 20) | A stage release instruction is only valid with a Fabric signature. BuildSafe's server holds no signing key |
-| Release only when rules are met | **Forseti policy** (programmable rules checked by every node: ValidateData, ValidateApprovers, ValidateExecutor) | Policy per stage: claimed by the builder · signed by homeowner · signed by an inspector assigned to this project · stage evidence attached · amount equals stage amount · stages in order |
-| No single admin changes the rules | **Quorum governance** (admin changes need multiple approvals) | Changing the contract (amounts, stages, payout account) needs homeowner + builder |
-| Identity | **TideCloak login (BYOiD)** with roles | Roles: homeowner, builder, inspector, mediator, BuildSafe admin |
-
-The functions in `tideGate.ts`:
+**Tide is simulated in this prototype.** All policy logic lives in `src/tide/tideGate.ts` and mirrors how a Forseti contract would run on the Tide Fabric. To go live, `signWithFabric()` is replaced by a real TideCloak signing request; the rest of the app does not change.
 
 | Function | Who | What the nodes check |
 |---|---|---|
@@ -58,8 +90,6 @@ The functions in `tideGate.ts`:
 | `evaluateRelease` | Homeowner (or mediator in a dispute) | Role allowed, claimed, in order, evidence, inspector signed, homeowner/mediator signed, amount. Only this and `evaluateChange` produce a signature |
 | `evaluateChange` | Anyone | Payout account or contract changes need homeowner + builder quorum |
 | `evaluateDispute` | Builder | Inspector signed, homeowner silent for 10+ days |
-
-**The ordinary login test.** With normal login and backend permissions, a BuildSafe admin, or anyone who breaches our server, could release funds or swap the payout account, and an escrow company has to be trusted. With Tide, a release that breaks the rules simply has no valid signature. The app shows this on screen whenever the admin or attacker role tries.
 
 ## Sources
 
